@@ -8,9 +8,9 @@ import { Link } from 'react-router-dom';
 
 function Login() {
   const { register, handleSubmit } = useForm();
-
   const loginUser = async (values) => {
     const response = await axios.post(`http://mytshop.runasp.net/api/Account/Login`, values);
+    localStorage.setItem("userToken", response.data.token);
     console.log(response);
   };
 

@@ -7,8 +7,9 @@ import Register from "./pages/register/Register";
 import Cart from "./pages/cart/Cart";
 import Shop from "./pages/shop/Shop";
 import ForgotPassword from "./pages/forgotPassword/ForgotPassword";
-import SendCode from "./pages/sendCode/SendCode"; // ✅ إضافة الاستيراد هنا
-
+import SendCode from "./pages/sendCode/SendCode"; 
+import Product from "./pages/product/Product";
+ 
 const routes = createBrowserRouter([
   {
     path: '/',
@@ -18,6 +19,10 @@ const routes = createBrowserRouter([
       {
         path: '/',
         element: <Home />
+      },
+      {
+        path: '/product/:id',
+        element: <Product />
       },
       {
         path: '/login',
@@ -40,8 +45,8 @@ const routes = createBrowserRouter([
         element: <ForgotPassword />
       },
       {
-        path: '/send-code',           // ✅ المسار الجديد
-        element: <SendCode />         // ✅ العنصر الجديد
+        path: '/send-code',           
+        element: <SendCode />         
       },
     ],
   }
