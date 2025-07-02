@@ -46,7 +46,7 @@ function ForgotPassword() {
        <Box
         sx={{
           flex: 1,
-          backgroundImage: 'url("/images/pic1.png")',
+          backgroundImage: 'url("/images/pic2.png")',
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
