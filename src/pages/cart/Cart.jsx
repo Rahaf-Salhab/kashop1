@@ -1,184 +1,177 @@
-import { Add, Delete, Remove } from '@mui/icons-material';
-import { Box, Card, CardContent, CardMedia, CircularProgress, Grid, IconButton, Typography } from '@mui/material';
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { Add, Delete, Remove, ShoppingCartOutlined } from '@mui/icons-material';
+import {
+  Box, Button, Card, CardContent, CardMedia,
+  CircularProgress, Grid, IconButton, Typography, Divider
+} from '@mui/material';
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { CartContext } from '../../context/CartContext';
+import axiosAuth from '../../api/axiosAuthInstance'; 
+
+const fetchCart = async () => {
+  const { data } = await axiosAuth.get(`Carts`);
+  return data.cartResponse;
+};
 
 function Cart() {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { getItems } = useContext(CartContext);
+  const queryClient = useQueryClient();
 
-  const getProductFromCart = async () => {
-    const token = localStorage.getItem("userToken");
-
-    if (!token) {
-      alert("Please log in to view your cart.");
-      setLoading(false);
-      return;
+  const { data: products = [], isLoading } = useQuery({
+    queryKey: ['cart'],
+    queryFn: fetchCart,
+    onSuccess: (data) => {
+      const totalItems = data.reduce((acc, item) => acc + item.count, 0);
+      getItems();
     }
+  });
 
-    try {
-      const response = await axios.get(`http://mytshop.runasp.net/api/Carts`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-      setProducts(response.data.cartResponse);
-    } catch (error) {
-      console.error("Failed to fetch cart products:", error);
-      alert("Unable to fetch cart. Please make sure you are logged in.");
-    } finally {
-      setLoading(false);
-    }
+  const calculateTotals = () => {
+    const totalPrice = products.reduce((acc, p) => acc + p.price * p.count, 0);
+    const totalItems = products.reduce((acc, p) => acc + p.count, 0);
+    return { totalPrice, totalItems };
   };
 
-  const increaseQty = async (id) => {
-    const token = localStorage.getItem("userToken");
-    try {
-      const response = await axios.patch(`http://mytshop.runasp.net/api/Carts/increaseCount/${id}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
+  const { totalPrice, totalItems } = calculateTotals();
 
-      if (response.data.message === "success") {
-        const updatedProduct = products.map((product) =>
-          product.id === id
-            ? { ...product, count: product.count + 1 }
-            : product
-        );
-        setProducts(updatedProduct);
-      } else {
-        alert("Something went wrong.");
-      }
-
-    } catch (error) {
-      console.error("Failed to increase quantity:", error);
-      alert("Unable to update cart. Please try again.");
+  const increaseMutation = useMutation({
+    mutationFn: (id) => axiosAuth.patch(`Carts/increaseCount/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['cart']);
+      getItems();
     }
-  };
+  });
 
-  const decreaseQty = async (id) => {
-    const token = localStorage.getItem("userToken");
-    try {
-      const response = await axios.patch(`http://mytshop.runasp.net/api/Carts/decreaseCount/${id}`, {}, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if (response.data.message === "success") {
-        let updatedProduct = products.map((product) =>
-          product.id === id
-            ? { ...product, count: product.count - 1 }
-            : product
-        ).filter((product) => product.count > 0);
-
-        setProducts(updatedProduct);
-      } else {
-        alert("Something went wrong.");
-      }
-
-    } catch (error) {
-      console.error("Failed to decrease quantity:", error);
-      alert("Unable to update cart. Please try again.");
+  const decreaseMutation = useMutation({
+    mutationFn: (id) => axiosAuth.patch(`Carts/decreaseCount/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['cart']);
+      getItems();
     }
-  };
+  });
 
-  const removeItem = async (id) => {
-    const token = localStorage.getItem("userToken");
-
-    try {
-      const response = await axios.delete(`http://mytshop.runasp.net/api/Carts/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if (response.status === 200 || response.status === 204) {
-        const updatedProducts = products.filter(product => product.id !== id);
-        setProducts(updatedProducts);
-      } else {
-        alert("Failed to remove item.");
-      }
-    } catch (error) {
-      console.error("Error removing item:", error);
-      alert("Unable to remove item. Please try again.");
+  const removeMutation = useMutation({
+    mutationFn: (id) => axiosAuth.delete(`Carts/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['cart']);
+      getItems();
     }
-  };
+  });
 
-  const clearCart = async () => {
-    const token = localStorage.getItem("userToken");
-
-    try {
-      const response = await axios.delete(`http://mytshop.runasp.net/api/Carts/clearCart`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      });
-
-      if (response.status === 200 || response.status === 204) {
-        setProducts([]);
-      } else {
-        alert("Failed to clear cart.");
-      }
-    } catch (error) {
-      console.error("Error clearing cart:", error);
-      alert("Unable to clear cart. Please try again.");
+  const clearMutation = useMutation({
+    mutationFn: () => axiosAuth.delete(`Carts/clearCart`),
+    onSuccess: () => {
+      queryClient.invalidateQueries(['cart']);
+      getItems();
     }
-  };
-
-  useEffect(() => {
-    getProductFromCart();
-  }, []);
+  });
 
   return (
-    <Box>
-      <Typography variant='h2' gutterBottom>Shopping Cart</Typography>
+    <Box sx={{ px: 3, py: 5 }}>
+      <Typography variant='h3' gutterBottom fontWeight="bold" color="primary">
+        🛒 Shopping Cart
+      </Typography>
+
       <Grid container spacing={4}>
         <Grid item xs={12} md={8}>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
-            <IconButton color="error" onClick={clearCart}>
-              <Delete />
-              <Typography sx={{ ml: 1 }}>Clear Cart</Typography>
-            </IconButton>
+            {products.length > 0 && (
+              <Button
+                variant="outlined"
+                color="error"
+                startIcon={<Delete />}
+                onClick={() => clearMutation.mutate()}
+              >
+                Clear Cart
+              </Button>
+            )}
           </Box>
 
-          {loading ? (
+          {isLoading ? (
             <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
               <CircularProgress />
             </Box>
+          ) : products.length === 0 ? (
+            <Box
+              sx={{
+                textAlign: 'center',
+                mt: 10,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                color: 'text.secondary',
+              }}
+            >
+              <ShoppingCartOutlined sx={{ fontSize: 100, mb: 2 }} color="disabled" />
+              <Typography variant="h5" gutterBottom>
+                Your Cart is Empty.
+              </Typography>
+              <Typography variant="body1" sx={{ mb: 2 }}>
+                Looks Like You Haven't Added Anything Yet,
+                Let's Fix that!
+              </Typography>
+              <Button
+                component={Link}
+                to="/"
+                variant="contained"
+                color="primary"
+                size="large"
+              >
+                Shop now!
+              </Button>
+            </Box>
           ) : (
-            products && products.length > 0 ? (
-              products.map((product) =>
-                <Card sx={{ display: 'flex', alignItems: 'center', textAlign: 'center', p: 2, mb: 2 }} key={product.id}>
-                  <CardMedia
-                    component={'img'}
-                    image='https://placehold.co/100'
-                    alt={product.name}
-                    sx={{ borderRadius: 2, width: 200 }}
-                  />
-                  <CardContent>
-                    <Typography variant='h5'>{product.name}</Typography>
-                    <Typography variant='h6' color='primary'>{product.price}</Typography>
-                  </CardContent>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <IconButton onClick={() => increaseQty(product.id)}><Add /></IconButton>
-                    <Typography>{product.count}</Typography>
-                    <IconButton onClick={() => decreaseQty(product.id)}><Remove /></IconButton>
-                    <IconButton color='error' onClick={() => removeItem(product.id)}><Delete /></IconButton>
-                  </Box>
-                </Card>
-              )
-            ) : (
-              <Typography variant="body1">No products in your cart.</Typography>
-            )
+            products.map((product) => (
+              <Card key={product.id} sx={{ mb: 2, p: 2 }}>
+                <Grid container spacing={2} alignItems="center">
+                  <Grid item xs={12} sm={3}>
+                    <CardMedia
+                      component="img"
+                      image="https://placehold.co/100"
+                      alt={product.name}
+                      sx={{ borderRadius: 2, width: "100%" }}
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={5}>
+                    <Typography variant="h6">{product.name}</Typography>
+                    <Typography variant="body1" color="primary">{product.price}$</Typography>
+                  </Grid>
+                  <Grid item xs={12} sm={4}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 1 }}>
+                      <IconButton onClick={() => increaseMutation.mutate(product.id)}><Add /></IconButton>
+                      <Typography>{product.count}</Typography>
+                      <IconButton onClick={() => decreaseMutation.mutate(product.id)}><Remove /></IconButton>
+                      <IconButton color="error" onClick={() => removeMutation.mutate(product.id)}><Delete /></IconButton>
+                    </Box>
+                  </Grid>
+                </Grid>
+              </Card>
+            ))
           )}
         </Grid>
 
+        {/* Order Summary */}
         <Grid item xs={12} md={4}>
-          <Card sx={{ p: 2 }}>
-            <Typography variant='h4' gutterBottom>Order Summary</Typography>
-           </Card>
+          <Card sx={{ p: 3, borderRadius: 3, boxShadow: 3 }}>
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              🧾 Order Summary
+            </Typography>
+            <Divider sx={{ mb: 2 }} />
+            <Typography variant="body1" sx={{ mb: 1 }}>Total Items: <strong>{totalItems}</strong></Typography>
+            <Typography variant="body1" sx={{ mb: 2 }}>Total Price: <strong>{totalPrice}$</strong></Typography>
+            <Button
+              variant="contained"
+              size="large"
+              fullWidth
+              color="primary"
+              component={Link}
+              to="/checkout"
+              disabled={products.length === 0}
+            >
+              Proceed to Checkout
+            </Button>
+          </Card>
         </Grid>
       </Grid>
     </Box>

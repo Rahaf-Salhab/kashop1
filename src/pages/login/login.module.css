@@ -1,3 +1,59 @@
 .formContainer{
     margin-top: 15px;
 }
+.login-container {
+    max-width: 400px;
+    margin: 80px auto;
+    padding: 40px 30px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", sans-serif;
+  }
+  
+  .login-container h5 {
+    text-align: center;
+    margin-bottom: 24px;
+    font-weight: bold;
+  }
+  
+  .login-container .MuiTextField-root {
+    margin-top: 16px;
+  }
+  
+  .login-container .MuiButton-root {
+    background-color: #4dc3c1;
+    color: white;
+    font-weight: bold;
+    padding: 12px 0;
+    margin-top: 20px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-container .MuiButton-root:hover {
+    background-color: #36b2b1;
+  }
+  
+  .login-container .forgot-password {
+    text-align: right;
+    margin-top: 8px;
+  }
+  
+  .login-container .forgot-password a {
+    font-size: 0.875rem;
+    color: #6c63ff;
+    text-decoration: none;
+  }
+  
+  .login-container .create-account {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 0.9rem;
+  }
+  
+  .login-container .create-account a {
+    color: #6c63ff;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  

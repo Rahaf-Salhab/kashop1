@@ -1,23 +1,46 @@
-import { Box, Button, TextField, Typography, InputAdornment } from '@mui/material';
-import React from 'react';
-import styles from './forgotPassword.module.css';
+import {
+  Box,
+  Button,
+  TextField,
+  Typography,
+  InputAdornment
+} from '@mui/material';
 import { AlternateEmail } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import axiosAuth from '../../api/axiosAuthInstance'; // ✅ استخدام axios instance
+import React from 'react';
 
 function ForgotPassword() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, formState: { errors } } = useForm();
   const navigate = useNavigate();
 
-  const userPass = async (values) => {
-    try {
-      const response = await axios.post(`http://mytshop.runasp.net/api/Account/ForgotPassword`, values);
-      console.log(response);
+  const mutation = useMutation({
+    mutationFn: async (values) => {
+      const { data } = await axiosAuth.post(`Account/ForgotPassword`, values);
+      return data;
+    },
+    onSuccess: (data) => {
+      console.log('Code sent:', data);
       navigate('/send-code');
-    } catch (error) {
+    },
+    onError: (error) => {
       console.error('Error sending code:', error);
+      alert("Failed to send verification code");
     }
+  });
+
+  const submitEmail = (values) => {
+    mutation.mutate(values);
+  };
+
+  const textFieldStyle = {
+    backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#1e1e1e' : '#fff',
+    input: {
+      color: (theme) => theme.palette.mode === 'dark' ? '#fff' : '#000',
+    },
+    borderRadius: 1,
   };
 
   return (
@@ -25,15 +48,25 @@ function ForgotPassword() {
       display="flex"
       justifyContent="center"
       alignItems="center"
-      minHeight="calc(100vh - 64px)" 
-      sx={{ backgroundColor: '#f9f9f9', px: 2 }}
+      minHeight="calc(100vh - 64px)"
+      sx={{ backgroundColor: 'background.default', px: 2 }}
     >
       <Box
         component="form"
-        className={styles.formContainer}
-        onSubmit={handleSubmit(userPass)}
+        onSubmit={handleSubmit(submitEmail)}
+        sx={{
+          width: '100%',
+          maxWidth: 400,
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 3,
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'dark' ? '#1e1e1e' : '#fff',
+          color: (theme) =>
+            theme.palette.mode === 'dark' ? '#fff' : '#000',
+        }}
       >
-        <Typography variant="subtitle1" fontWeight="bold" color="#6c63ff" mb={1} fontSize={{ xs: '1rem', sm: '1.1rem' }}>
+        <Typography variant="subtitle1" fontWeight="bold" color="primary" mb={1}>
           Step 1
         </Typography>
 
@@ -41,14 +74,21 @@ function ForgotPassword() {
           Forget Password
         </Typography>
 
-        <Typography variant="body2" color="text.secondary" mb={3} fontSize={{ xs: '0.9rem', sm: '1rem' }}>
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          mb={3}
+          fontSize={{ xs: '0.9rem', sm: '1rem' }}
+        >
           Please enter your email address and we’ll send you a recovery code.
         </Typography>
 
         <TextField
-          {...register('email')}
+          {...register('email', { required: "Email is required" })}
           type="email"
           label="Email Address"
+          error={!!errors.email}
+          helperText={errors.email?.message}
           fullWidth
           margin="normal"
           InputProps={{
@@ -58,12 +98,14 @@ function ForgotPassword() {
               </InputAdornment>
             ),
           }}
+          sx={textFieldStyle}
         />
 
         <Button
           variant="contained"
           type="submit"
           fullWidth
+          disabled={mutation.isPending}
           sx={{
             backgroundColor: '#4dc6cd',
             textTransform: 'none',
@@ -73,14 +115,29 @@ function ForgotPassword() {
             fontSize: { xs: '0.95rem', sm: '1.1rem' },
             borderRadius: '10px',
             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+            '&:hover': {
+              backgroundColor: '#3cb5bd',
+            },
           }}
         >
-          Send Code
+          {mutation.isPending ? 'Sending...' : 'Send Code'}
         </Button>
 
-        <Typography variant="body2" textAlign="center" mt={3} fontSize={{ xs: '0.85rem', sm: '0.95rem' }}>
+        <Typography
+          variant="body2"
+          textAlign="center"
+          mt={3}
+          fontSize={{ xs: '0.85rem', sm: '0.95rem' }}
+        >
           Remembered your password?{' '}
-          <Link to="/login" style={{ textDecoration: 'none', color: '#6c63ff', fontWeight: 500 }}>
+          <Link
+            to="/login"
+            style={{
+              textDecoration: 'none',
+              color: '#6c63ff',
+              fontWeight: 500,
+            }}
+          >
             Log in
           </Link>
         </Typography>
@@ -90,7 +147,3 @@ function ForgotPassword() {
 }
 
 export default ForgotPassword;
-
-
-
-

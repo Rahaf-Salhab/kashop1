@@ -1,25 +1,29 @@
 import { Button, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, Typography } from '@mui/material';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import styles from './products.module.css';
+ import styles from './products.module.css';
 import { Link } from 'react-router';
+import { useQuery } from '@tanstack/react-query';
+import Loader from '../shared/Loader';
 
  export default function Products() {
-  const [products, setProducts] = useState([]);
-
-  const getProducts = async () => {
-    const response = await axios.get(`http://mytshop.runasp.net/api/products`);
-    console.log(response.data);
-    setProducts(response.data);
-  }
-
-  useEffect(() => {
-    getProducts();
-  }, []);
+  const fetchProducts = async()=>{
+    const {data} = await axios.get(`https://mytshop.runasp.net/api/products`);
+    return data ;
+}
+const {data , isLoading , isError , error} = useQuery({
+queryKey : ['products'],
+queryFn : fetchProducts,
+staleTime : 6 * 60 * 60 * 1000 ,
+refetchOnWindowFocus : true,
+});
+if(isError) return <p>error is : {error.message}</p>
+if(isLoading) return <Loader />
+ 
+   
 
   return (
     <Grid container spacing={4} className={`${styles.section}`}>
-      {products.map((product) => (
+      {data.map((product) => (
         <Grid item size={{ xs: 12, sm: 6, md: 4, xl: 3 }} key={product.id}>
           <Card>
             <CardMedia component={'img'} image={product.mainImg} alt={product.description} >
@@ -31,7 +35,7 @@ import { Link } from 'react-router';
               </Typography>
             </CardContent>
             <CardActions>
-              <Button size='small' component={Link} to={`/product/${product.id}`}>Details</Button>
+              <Button size='small' component={Link} to={`/product/${product.id}`}viewTransition>Details</Button>
             </CardActions>
           </Card>
         </Grid>

@@ -1,26 +1,28 @@
 import { Box, Button, InputAdornment, TextField, Typography } from '@mui/material';
 import { AlternateEmail, Lock } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
-import styles from './sendCode.module.css';
 import { useNavigate } from 'react-router-dom';
+import { useMutation } from '@tanstack/react-query';
+import axiosAuth from '../../api/axiosAuthInstance';
 
 function SendCode() {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
 
-  const sendPass = async (values) => {
-    try {
-      const response = await axios.patch(`http://mytshop.runasp.net/api/Account/SendCode`, values);
-      console.log(response);
-
+  const sendCodeMutation = useMutation({
+    mutationFn: async (values) => {
+      const response = await axiosAuth.patch(`/Account/SendCode`, values);
+      return response;
+    },
+    onSuccess: (response) => {
       if (response.status === 200) {
         alert("Password has been reset successfully.");
         navigate('/login');
       } else {
         alert("Something went wrong. Please try again.");
       }
-    } catch (error) {
+    },
+    onError: (error) => {
       console.error("Error submitting code:", error);
       if (error.response?.data) {
         alert(`Error: ${error.response.data}`);
@@ -28,27 +30,50 @@ function SendCode() {
         alert("Failed to reset password. Please check the code and try again.");
       }
     }
+  });
+
+  const onSubmit = (data) => {
+    sendCodeMutation.mutate(data);
   };
+
+  const textFieldStyle = {
+    backgroundColor: (theme) => theme.palette.mode === 'dark' ? '#1e1e1e' : '#fff',
+    input: {
+      color: (theme) => theme.palette.mode === 'dark' ? '#fff' : '#000',
+    },
+    borderRadius: 1,
+  };
+
+  const password = watch('password');
 
   return (
     <Box
       display="flex"
       justifyContent="center"
       alignItems="center"
-      minHeight="calc(100vh - 64px)" // إذا كان في Navbar ثابت
-      sx={{ backgroundColor: '#f9f9f9', px: 2 }}
+      minHeight="calc(100vh - 64px)"
+      sx={{ backgroundColor: 'background.default', px: 2 }}
     >
       <Box
         component="form"
-        className={styles.formContainer}
-        onSubmit={handleSubmit(sendPass)}
+        onSubmit={handleSubmit(onSubmit)}
+        sx={{
+          width: '100%',
+          maxWidth: 400,
+          p: 4,
+          borderRadius: 2,
+          boxShadow: 3,
+          backgroundColor: (theme) =>
+            theme.palette.mode === 'dark' ? '#1e1e1e' : '#fff',
+          color: (theme) =>
+            theme.palette.mode === 'dark' ? '#fff' : '#000',
+        }}
       >
         <Typography
           variant="h6"
           fontWeight="bold"
-          color="#6c63ff"
+          color="primary"
           mb={1}
-          fontSize={{ xs: '1rem', sm: '1.1rem' }}
         >
           Step 2
         </Typography>
@@ -62,11 +87,13 @@ function SendCode() {
         </Typography>
 
         <TextField
-          {...register('email')}
+          {...register('email', { required: "Email is required" })}
           type="email"
           label="Email"
           fullWidth
           margin="normal"
+          error={!!errors.email}
+          helperText={errors.email?.message}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -74,13 +101,16 @@ function SendCode() {
               </InputAdornment>
             ),
           }}
+          sx={textFieldStyle}
         />
 
         <TextField
-          {...register('code')}
+          {...register('code', { required: "Code is required" })}
           label="Code"
           fullWidth
           margin="normal"
+          error={!!errors.code}
+          helperText={errors.code?.message}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -88,14 +118,17 @@ function SendCode() {
               </InputAdornment>
             ),
           }}
+          sx={textFieldStyle}
         />
 
         <TextField
-          {...register('password')}
+          {...register('password', { required: "Password is required" })}
           type="password"
           label="New Password"
           fullWidth
           margin="normal"
+          error={!!errors.password}
+          helperText={errors.password?.message}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -103,14 +136,21 @@ function SendCode() {
               </InputAdornment>
             ),
           }}
+          sx={textFieldStyle}
         />
 
         <TextField
-          {...register('confirmPassword')}
+          {...register('confirmPassword', {
+            required: "Confirmation is required",
+            validate: (value) =>
+              value === password || "Passwords do not match"
+          })}
           type="password"
           label="Confirm Password"
           fullWidth
           margin="normal"
+          error={!!errors.confirmPassword}
+          helperText={errors.confirmPassword?.message}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -118,12 +158,14 @@ function SendCode() {
               </InputAdornment>
             ),
           }}
+          sx={textFieldStyle}
         />
 
         <Button
           variant="contained"
           type="submit"
           fullWidth
+          disabled={sendCodeMutation.isLoading}
           sx={{
             mt: 3,
             py: 1.6,
@@ -133,9 +175,12 @@ function SendCode() {
             textTransform: 'none',
             borderRadius: '10px',
             boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
+            '&:hover': {
+              backgroundColor: '#3cb5bd',
+            },
           }}
         >
-          Reset Password
+          {sendCodeMutation.isLoading ? 'Sending...' : 'Reset Password'}
         </Button>
       </Box>
     </Box>
