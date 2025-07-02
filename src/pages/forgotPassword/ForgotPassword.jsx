@@ -3,13 +3,13 @@ import {
   Button,
   TextField,
   Typography,
-  InputAdornment
+  InputAdornment,
 } from '@mui/material';
 import { AlternateEmail } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
-import axiosAuth from '../../api/axiosAuthInstance'; // ✅ استخدام axios instance
+import axiosAuth from '../../api/axiosAuthInstance';
 import React from 'react';
 
 function ForgotPassword() {
@@ -21,14 +21,12 @@ function ForgotPassword() {
       const { data } = await axiosAuth.post(`Account/ForgotPassword`, values);
       return data;
     },
-    onSuccess: (data) => {
-      console.log('Code sent:', data);
+    onSuccess: () => {
       navigate('/send-code');
     },
-    onError: (error) => {
-      console.error('Error sending code:', error);
+    onError: () => {
       alert("Failed to send verification code");
-    }
+    },
   });
 
   const submitEmail = (values) => {
@@ -44,106 +42,123 @@ function ForgotPassword() {
   };
 
   return (
-    <Box
-      display="flex"
-      justifyContent="center"
-      alignItems="center"
-      minHeight="calc(100vh - 64px)"
-      sx={{ backgroundColor: 'background.default', px: 2 }}
-    >
-      <Box
-        component="form"
-        onSubmit={handleSubmit(submitEmail)}
+    <Box display="flex" minHeight="100vh">
+       <Box
         sx={{
-          width: '100%',
-          maxWidth: 400,
-          p: 4,
-          borderRadius: 2,
-          boxShadow: 3,
-          backgroundColor: (theme) =>
-            theme.palette.mode === 'dark' ? '#1e1e1e' : '#fff',
-          color: (theme) =>
-            theme.palette.mode === 'dark' ? '#fff' : '#000',
+          flex: 1,
+          backgroundImage: 'url("/images/pic1.png")',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          display: { xs: 'none', md: 'block' },
+        }}
+      />
+
+       <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        flex={1}
+        sx={{
+          backgroundColor: 'background.default',
+          px: 2,
         }}
       >
-        <Typography variant="subtitle1" fontWeight="bold" color="primary" mb={1}>
-          Step 1
-        </Typography>
-
-        <Typography fontWeight="bold" mb={1} fontSize={{ xs: '1.5rem', sm: '1.8rem' }}>
-          Forget Password
-        </Typography>
-
-        <Typography
-          variant="body2"
-          color="text.secondary"
-          mb={3}
-          fontSize={{ xs: '0.9rem', sm: '1rem' }}
-        >
-          Please enter your email address and we’ll send you a recovery code.
-        </Typography>
-
-        <TextField
-          {...register('email', { required: "Email is required" })}
-          type="email"
-          label="Email Address"
-          error={!!errors.email}
-          helperText={errors.email?.message}
-          fullWidth
-          margin="normal"
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <AlternateEmail />
-              </InputAdornment>
-            ),
-          }}
-          sx={textFieldStyle}
-        />
-
-        <Button
-          variant="contained"
-          type="submit"
-          fullWidth
-          disabled={mutation.isPending}
+        <Box
+          component="form"
+          onSubmit={handleSubmit(submitEmail)}
           sx={{
-            backgroundColor: '#4dc6cd',
-            textTransform: 'none',
-            fontWeight: 'bold',
-            mt: 3,
-            py: 1.6,
-            fontSize: { xs: '0.95rem', sm: '1.1rem' },
-            borderRadius: '10px',
-            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-            '&:hover': {
-              backgroundColor: '#3cb5bd',
-            },
+            width: '100%',
+            maxWidth: 450,
+            p: 4,
+            borderRadius: 2,
+            boxShadow: 3,
+            backgroundColor: (theme) =>
+              theme.palette.mode === 'dark' ? '#1e1e1e' : '#fff',
+            color: (theme) =>
+              theme.palette.mode === 'dark' ? '#fff' : '#000',
           }}
         >
-          {mutation.isPending ? 'Sending...' : 'Send Code'}
-        </Button>
+          <Typography variant="subtitle1" fontWeight="bold" color="primary" mb={1}>
+            Step 1
+          </Typography>
 
-        <Typography
-          variant="body2"
-          textAlign="center"
-          mt={3}
-          fontSize={{ xs: '0.85rem', sm: '0.95rem' }}
-        >
-          Remembered your password?{' '}
-          <Link
-            to="/login"
-            style={{
-              textDecoration: 'none',
-              color: '#6c63ff',
-              fontWeight: 500,
+          <Typography fontWeight="bold" mb={1} fontSize={{ xs: '1.5rem', sm: '1.8rem' }}>
+            Forget Password
+          </Typography>
+
+          <Typography
+            variant="body2"
+            color="text.secondary"
+            mb={3}
+            fontSize={{ xs: '0.9rem', sm: '1rem' }}
+          >
+            Please enter your email address and we’ll send you a recovery code.
+          </Typography>
+
+          <TextField
+            {...register('email', { required: "Email is required" })}
+            type="email"
+            label="Email Address"
+            error={!!errors.email}
+            helperText={errors.email?.message}
+            fullWidth
+            margin="normal"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <AlternateEmail />
+                </InputAdornment>
+              ),
+            }}
+            sx={textFieldStyle}
+          />
+
+          <Button
+            variant="contained"
+            type="submit"
+            fullWidth
+            disabled={mutation.isPending}
+            sx={{
+              backgroundColor: '#4dc6cd',
+              textTransform: 'none',
+              fontWeight: 'bold',
+              mt: 3,
+              py: 1.6,
+              fontSize: { xs: '0.95rem', sm: '1.1rem' },
+              borderRadius: '10px',
+              boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+              '&:hover': {
+                backgroundColor: '#3cb5bd',
+              },
             }}
           >
-            Log in
-          </Link>
-        </Typography>
+            {mutation.isPending ? 'Sending...' : 'Send Code'}
+          </Button>
+
+          <Typography
+            variant="body2"
+            textAlign="center"
+            mt={3}
+            fontSize={{ xs: '0.85rem', sm: '0.95rem' }}
+          >
+            Remembered your password?{' '}
+            <Link
+              to="/login"
+              style={{
+                textDecoration: 'none',
+                color: '#6c63ff',
+                fontWeight: 500,
+              }}
+            >
+              Log in
+            </Link>
+          </Typography>
+        </Box>
       </Box>
     </Box>
   );
 }
 
 export default ForgotPassword;
+
