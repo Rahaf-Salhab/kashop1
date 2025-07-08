@@ -1,12 +1,24 @@
-import { Button } from '@mui/material'
-import React from 'react'
+import React from 'react';
+import { CircularProgress, Typography, Box } from '@mui/material';
 
 function Loader() {
   return (
-    <Button loading variant="outlined" loadingIndicator="Loading…" >
-    Loading...
-  </Button>  )
-
+    <Box
+      sx={{
+        minHeight: '60vh',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 2,
+      }}
+    >
+      <CircularProgress size={48} thickness={4} color="primary" />
+      <Typography variant="body1" color="text.secondary">
+        Loading...
+      </Typography>
+    </Box>
+  );
 }
 
-export default Loader
+export default Loader;

@@ -4,8 +4,8 @@ import { createContext, useEffect, useState } from "react";
 export const CartContext = createContext(null);
 
 const CartContextProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState(0); // عدد المنتجات الفريدة
-  const [cartItemsList, setCartItemsList] = useState([]); // قائمة المنتجات الكاملة
+  const [cartItems, setCartItems] = useState(0); 
+  const [cartItemsList, setCartItemsList] = useState([]); 
 
   const getItems = async () => {
     const token = localStorage.getItem("userToken");

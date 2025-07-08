@@ -21,6 +21,9 @@ import { Link } from 'react-router-dom';
 import styles from './register.module.css';
 import axiosAuth from '../../api/axiosAuthInstance';
 
+// ✅ صورة الخلفية
+import pic2 from '../../assets/images/pic2.png';
+
 function Register() {
   const theme = useTheme();
   const {
@@ -55,24 +58,28 @@ function Register() {
         display: 'flex',
         minHeight: '100vh',
         flexDirection: { xs: 'column', md: 'row' },
+        bgcolor: theme.palette.mode === 'dark' ? '#121212' : '#f9f9f9',
       }}
     >
-      {/* الصورة الجانبية */}
+      {/* ✅ الصورة الجانبية مع فراغات */}
       <Box
         sx={{
-          width: { xs: '100%', md: '50%' },
-          backgroundImage: 'url(/images/pic2.png)',
+          display: { xs: 'none', md: 'block' },
+          width: '45%',
+          backgroundImage: `url(${pic2})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          minHeight: { xs: 200, md: '100%' },
+          minHeight: '100vh',
+          mx: 4, // ✅ فراغ يمين ويسار
+          borderRadius: 2,
         }}
       />
 
-      {/* فورم التسجيل */}
+      {/* ✅ فورم التسجيل */}
       <Box
         sx={{
-          width: { xs: '100%', md: '50%' },
+          width: { xs: '100%', md: '55%' },
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
@@ -86,7 +93,7 @@ function Register() {
             padding: { xs: 3, sm: 4 },
             width: '100%',
             maxWidth: 550,
-            borderRadius: 2,
+            borderRadius: 3,
           }}
         >
           <Typography variant="h5" fontWeight="bold" mb={2}>
