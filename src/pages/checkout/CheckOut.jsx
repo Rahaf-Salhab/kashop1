@@ -1,15 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  FormControl,
-  FormControlLabel,
-  Radio,
-  RadioGroup,
-  Typography,
-  useTheme,
-  Divider,
-} from "@mui/material";
+import {Box,Button,Card,FormControl,FormControlLabel,Radio,RadioGroup,Typography,useTheme,Divider,} from "@mui/material";
 import { useState, useContext } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axiosAuth from "../../api/axiosAuthInstance";
@@ -120,7 +109,7 @@ function CheckOut() {
         minHeight: "100vh",
       }}
     >
-      {/* ✅ صورة على اليسار مع فراغ من الجانبين */}
+      {/*   صورة على اليسار مع فراغ من الجانبين */}
       <Box
         sx={{
           flex: 1,
@@ -129,11 +118,11 @@ function CheckOut() {
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
           display: { xs: "none", md: "block" },
-          px: 4, // فراغ من اليمين واليسار
+          px: 4, 
         }}
       />
 
-      {/* ✅ الفورم */}
+      {/*   الفورم */}
       <Box
         sx={{
           flex: 1,

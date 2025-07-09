@@ -1,19 +1,7 @@
 import React from 'react';
 import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Typography,
-  Paper,
-  Avatar,
-  Divider,
-  Button,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import {Box,List,ListItem,ListItemButton,ListItemText,Typography,Paper,Avatar,Divider,Button,
+  useMediaQuery,useTheme} from '@mui/material';
 import InfoIcon from '@mui/icons-material/Info';
 import LockIcon from '@mui/icons-material/Lock';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -39,8 +27,7 @@ function Profile() {
   const textPrimary = theme.palette.text.primary;
   const textSecondary = theme.palette.text.secondary;
 
-  // ✅ نستخدم لون النافبار نفسه لأفاتار القائمة
-  const navbarColor = theme.palette.mode === 'light' ? '#55cbd2' : '#044a4f';
+   const navbarColor = theme.palette.mode === 'light' ? '#55cbd2' : '#044a4f';
   const navbarText = theme.palette.mode === 'light' ? '#002B5B' : '#ffffff';
 
   const hoverColor = navbarColor;

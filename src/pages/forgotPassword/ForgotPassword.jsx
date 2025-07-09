@@ -1,16 +1,13 @@
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  InputAdornment,
-} from '@mui/material';
+import { Box, Button, TextField, Typography, InputAdornment } from '@mui/material';
 import { AlternateEmail } from '@mui/icons-material';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@tanstack/react-query';
 import axiosAuth from '../../api/axiosAuthInstance';
 import React from 'react';
+
+// ✅ استيراد الصورة بشكل صحيح
+import pic2 from '../../assets/images/pic2.png';
 
 function ForgotPassword() {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -42,26 +39,29 @@ function ForgotPassword() {
   };
 
   return (
-    <Box display="flex" minHeight="100vh">
+    <Box display="flex" minHeight="80vh">
        <Box
         sx={{
           flex: 1,
-          backgroundImage: 'url("/images/pic1.png")',
+          backgroundImage: `url(${pic2})`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           display: { xs: 'none', md: 'block' },
+          mx: 2, 
+          borderRadius: 2,
         }}
       />
 
-       <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
+      {/* الفورم في المنتصف */}
+      <Box
         flex={1}
         sx={{
           backgroundColor: 'background.default',
           px: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <Box
@@ -161,4 +161,5 @@ function ForgotPassword() {
 }
 
 export default ForgotPassword;
+
 

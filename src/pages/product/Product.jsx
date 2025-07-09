@@ -1,14 +1,7 @@
 import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import {Box,Button,Card,Divider,Typography,useTheme,} from '@mui/material';
 import { toast } from 'react-toastify';
 import Loader from '../../components/shared/Loader';
 import { CartContext } from '../../context/CartContext';
@@ -61,8 +54,7 @@ function Product() {
   if (isLoading) return <Loader />;
   if (isError) return <div>Failed to load product.</div>;
 
-  // ✅ ألوان متوافقة مع النافبار
-  const buttonColor = theme.palette.mode === 'light' ? '#55cbd2' : '#044a4f';
+   const buttonColor = theme.palette.mode === 'light' ? '#55cbd2' : '#044a4f';
   const buttonHover = theme.palette.mode === 'light' ? '#35b6bc' : '#033a3e';
   const bgColor = theme.palette.mode === 'light' ? '#f9f9f9' : theme.palette.background.default;
 
@@ -77,7 +69,7 @@ function Product() {
         fontFamily: 'monospace',
       }}
     >
-      {/* ✅ صورة المنتج */}
+      {/*   صورة المنتج */}
       <Box
         sx={{
           display: { xs: 'none', md: 'block' },
@@ -93,16 +85,16 @@ function Product() {
         }}
       />
 
-      {/* ✅ تفاصيل المنتج */}
+      {/*   تفاصيل المنتج */}
       <Box
         sx={{
           width: { xs: '100%', md: '55%' },
           display: 'flex',
-          alignItems: 'flex-start', // ⬅️ رفع المحتوى للأعلى
+          alignItems: 'flex-start', 
           justifyContent: 'center',
           px: { xs: 2, sm: 4, md: 8 },
           py: { xs: 4, md: 6 },
-          mt: { xs: 2, md: 4 }, // ⬅️ تقريب من النافبار
+          mt: { xs: 2, md: 4 }, 
         }}
       >
         <Card

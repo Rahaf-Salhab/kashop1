@@ -1,10 +1,4 @@
-import {
-  Button,
-  Typography,
-  useTheme,
-  Grid,
-  Box,
-} from '@mui/material';
+import {Button,Typography,useTheme,Grid,Box,} from '@mui/material';
 import axiosAuth from '../../api/axiosAuthInstance';
 import { useQuery } from '@tanstack/react-query';
 import Loader from '../shared/Loader';

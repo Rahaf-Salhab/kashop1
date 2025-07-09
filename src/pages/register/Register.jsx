@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Box,
-  Button,
-  InputAdornment,
-  TextField,
-  Paper,
-  useTheme,
-  Typography
-} from '@mui/material';
+import {Box,Button,InputAdornment,TextField,Paper,useTheme,Typography} from '@mui/material';
 import {
   AccountCircle,
   AlternateEmail,
@@ -21,8 +13,7 @@ import { Link } from 'react-router-dom';
 import styles from './register.module.css';
 import axiosAuth from '../../api/axiosAuthInstance';
 
-// ✅ صورة الخلفية
-import pic2 from '../../assets/images/pic2.png';
+ import pic2 from '../../assets/images/pic2.png';
 
 function Register() {
   const theme = useTheme();
@@ -61,8 +52,7 @@ function Register() {
         bgcolor: theme.palette.mode === 'dark' ? '#121212' : '#f9f9f9',
       }}
     >
-      {/* ✅ الصورة الجانبية مع فراغات */}
-      <Box
+       <Box
         sx={{
           display: { xs: 'none', md: 'block' },
           width: '45%',
@@ -70,13 +60,13 @@ function Register() {
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
-          minHeight: '100vh',
-          mx: 4, // ✅ فراغ يمين ويسار
+          minHeight: '90vh',
+          mx: 4, 
           borderRadius: 2,
         }}
       />
 
-      {/* ✅ فورم التسجيل */}
+      {/*   فورم التسجيل */}
       <Box
         sx={{
           width: { xs: '100%', md: '55%' },

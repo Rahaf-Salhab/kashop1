@@ -1,16 +1,7 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axiosAuth from '../../api/axiosAuthInstance';
-import {
-  Box,
-  Typography,
-  CircularProgress,
-  Avatar,
-  useTheme,
-  Fade,
-  Divider,
-  Stack,
-} from '@mui/material';
+import {Box,Typography,CircularProgress,Avatar,useTheme,Fade,Divider,Stack,} from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import EmailIcon from '@mui/icons-material/Email';
 import CakeIcon from '@mui/icons-material/Cake';

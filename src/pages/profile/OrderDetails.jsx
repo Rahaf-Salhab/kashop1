@@ -88,8 +88,7 @@ function OrderDetails() {
   );
 }
 
-// Simple info row component
-function InfoRow({ icon, label, value }) {
+ function InfoRow({ icon, label, value }) {
   return (
     <Grid container alignItems="center" spacing={2} mb={3}>
       <Grid item>

@@ -1,16 +1,5 @@
- // src/pages/SeeReviews/SeeReviews.jsx
-
 import React from 'react';
-import {
-  Box,
-  Typography,
-  Rating,
-  Card,
-  CardContent,
-  Container,
-  CircularProgress,
-  useTheme,
-} from '@mui/material';
+import {Box,Typography,Rating,Card,CardContent,Container,CircularProgress,useTheme,} from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import axiosAuth from '../../api/axiosAuthInstance';
@@ -49,8 +38,7 @@ export default function SeeReviews() {
 
   return (
     <Container maxWidth="md" sx={{ mt: 6, mb: 6 }}>
-      {/* عنوان المنتج مع الأيقونة */}
-      <Box
+       <Box
         display="flex"
         alignItems={{ xs: 'flex-start', sm: 'center' }}
         flexDirection={{ xs: 'column', sm: 'row' }}
@@ -71,7 +59,7 @@ export default function SeeReviews() {
         </Typography>
       </Box>
 
-      {/* تقييم النجوم العام */}
+      {/* تقييم النجوم   */}
       <Box
         display="flex"
         alignItems={{ xs: 'flex-start', sm: 'center' }}

@@ -1,20 +1,22 @@
- import Category from "../../components/category/Category"
-import Footer from "../../components/footer/Footer"
-import HeroSection from "../../components/heroSection/HeroSection"
-import Pictures from "../../components/pictures/Pictures"
-import Products from "../../components/products/Products"
- 
- function Home() {
-   
+import HeroSection from "../../components/heroSection/HeroSection";
+import Category from "../../components/category/Category";
+import Products from "../../components/products/Products";
+import Pictures from "../../components/pictures/Pictures";
+import SubscribeForm from "../../components/subscribeForm/SubscribeForm";
+ import { Box } from "@mui/material";
+
+function Home() {
   return (
     <>
-    <HeroSection />
-    <Category />
-    <Pictures />
-    <Products />
-       </>
-    
-  )
+      <Box sx={{ '& > *': { mb: { xs: 3, sm: 5 } } }}>
+        <HeroSection />
+        <Category />
+        <Products />
+        <Pictures />
+        <SubscribeForm />
+      </Box>
+     </>
+  );
 }
 
-export default Home
+export default Home;

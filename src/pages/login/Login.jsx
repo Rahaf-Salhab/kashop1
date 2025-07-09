@@ -1,14 +1,5 @@
 import React, { useState, useContext } from 'react';
-import {
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  TextField,
-  Typography,
-  Paper,
-  useTheme,
-} from '@mui/material';
+import {Box,Button,IconButton,InputAdornment,TextField,Typography,Paper,useTheme} from '@mui/material';
 import { AlternateEmail, Visibility, VisibilityOff } from '@mui/icons-material';
 import { useNavigate, Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -59,7 +50,7 @@ function Login() {
         bgcolor: isDarkMode ? '#121212' : '#f9f9f9',
       }}
     >
-      {/* ✅ الصورة الجانبية */}
+      {/*   الصورة الجانبية */}
       <Box
         sx={{
           display: { xs: 'none', md: 'block' },
@@ -70,11 +61,11 @@ function Login() {
           backgroundPosition: 'center',
           minHeight: '100vh',
           position: 'relative',
-          mx: 4, // ✅ margin right + left
+          mx: 4, 
           borderRadius: 2,
         }}
       >
-        {/* ✅ شعار فوق الصورة */}
+        {/*   شعار فوق الصورة */}
         <Box
           sx={{
             position: 'absolute',
@@ -99,7 +90,7 @@ function Login() {
         </Box>
       </Box>
 
-      {/* ✅ الفورم */}
+      {/*   الفورم */}
       <Box
         sx={{
           width: { xs: '100%', md: '55%' },

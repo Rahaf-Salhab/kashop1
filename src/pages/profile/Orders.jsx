@@ -1,22 +1,13 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axiosAuth from '../../api/axiosAuthInstance';
-import {
-  Box,
-  Typography,
-  Paper,
-  CircularProgress,
-  Button,
-  Divider,
-  useTheme,
-  Stack,
-} from '@mui/material';
+import {Box,Typography,Paper,CircularProgress,Button,Divider,useTheme,Stack,} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const fetchOrders = async () => {
   const { data } = await axiosAuth.get('Orders');
 
-  console.log("🛒 Orders Response:", data); // ✅ طباعة الطلبات في الكونسول
+  console.log("🛒 Orders Response:", data); 
 
   const sorted = data.sort((a, b) => new Date(b.orderDate) - new Date(a.orderDate));
   return sorted;

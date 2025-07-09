@@ -1,22 +1,6 @@
 import React from 'react';
-import {
-  Box,
-  Container,
-  Divider,
-  Grid,
-  Typography,
-  Link as MuiLink,
-  useTheme,
-  IconButton,
-} from '@mui/material';
-import {
-  Instagram,
-  Pinterest,
-  Twitter,
-  Email,
-  AccessTime,
-  LocationOn,
-} from '@mui/icons-material';
+import { Box, Container, Divider, Grid, Typography, Link as MuiLink, useTheme, IconButton} from '@mui/material';
+import {Instagram,Pinterest,Twitter,Email,AccessTime,LocationOn} from '@mui/icons-material';
 
 function Footer() {
   const theme = useTheme();

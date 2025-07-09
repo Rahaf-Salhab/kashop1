@@ -59,7 +59,7 @@ function HeroSection() {
             borderRadius: { xs: 0, md: '16px' },
             textAlign: { xs: 'center', md: 'start' },
             minHeight: { xs: 300, sm: 350, md: 400 },
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)', // ✅ تم الإضافة هنا
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)', 
           }}
         >
           {/* النصوص والزر */}

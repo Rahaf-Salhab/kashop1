@@ -35,6 +35,9 @@ import ChangePassword from "./pages/profile/ChangePassword";
 import Orders from "./pages/profile/Orders";
 import OrderDetails from "./pages/profile/OrderDetails";
 
+//  subscribe page
+import SubscribeForm from "./components/subscribeForm/SubscribeForm";
+
 const routes = createBrowserRouter([
   {
     path: '/',
@@ -59,7 +62,7 @@ const routes = createBrowserRouter([
         viewTransition: true
       },
       {
-        path: '/product/:id/rate', // ✅ صفحة كتابة تقييم
+        path: '/product/:id/rate',
         element: (
           <ProtectedRouter>
             <ProductReview />
@@ -67,7 +70,7 @@ const routes = createBrowserRouter([
         )
       },
       {
-        path: '/product/:id/reviews', // ✅ صفحة عرض التقييمات
+        path: '/product/:id/reviews',
         element: <SeeReviews />
       },
       {
@@ -105,6 +108,10 @@ const routes = createBrowserRouter([
       {
         path: '/category/:id/products',
         element: <CategoryProducts />
+      },
+      {
+        path: '/subscribe', 
+        element: <SubscribeForm />
       },
       {
         path: '/profile',
