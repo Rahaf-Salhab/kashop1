@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Typography, useTheme, Button } from '@mui/material';
+import { Box, Typography, useTheme, Button, useMediaQuery } from '@mui/material';
 import music from '../../assets/images/music.png';
 import pic9 from '../../assets/images/pic9.png';
 import pic11 from '../../assets/images/pic11.png';
@@ -7,19 +7,19 @@ import pic11 from '../../assets/images/pic11.png';
 function HeroSection() {
   const theme = useTheme();
   const isDarkMode = theme.palette.mode === 'dark';
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
   return (
-    <Box sx={{ mt: 4 }}>
+    <Box sx={{ mt: 4, overflowX: 'hidden' }}> {/* يمنع التمرير الأفقي */}
       <Box
         sx={{
-          width: '100vw',
-          marginLeft: 'calc(50% - 50vw)',
+          width: '100%',
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
           alignItems: 'stretch',
         }}
       >
-        {/* يسار: صورة pic9 */}
+        {/* يسار */}
         <Box
           sx={{
             flex: 1.2,
@@ -34,20 +34,27 @@ function HeroSection() {
             component="img"
             src={pic9}
             alt="Left image"
+            loading="lazy"
             sx={{
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              borderRadius: { xs: 0, md: '16px' },
+              borderRadius: '16px',
+              transition: 'transform 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.03)',
+              },
             }}
           />
         </Box>
 
-        {/* البانر الرئيسي */}
+        {/* البانر */}
         <Box
           sx={{
             flex: 6,
-            backgroundColor: isDarkMode ? '#044a4f' : '#55CBD2',
+            background: isDarkMode
+              ? 'linear-gradient(to right, #03363D, #044a4f)'
+              : 'linear-gradient(to right, #55CBD2, #A0E6E8)',
             px: { xs: 2, sm: 3, md: 6 },
             py: { xs: 4, md: 6 },
             mx: { md: 2 },
@@ -59,10 +66,10 @@ function HeroSection() {
             borderRadius: { xs: 0, md: '16px' },
             textAlign: { xs: 'center', md: 'start' },
             minHeight: { xs: 300, sm: 350, md: 400 },
-            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)', 
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.1)',
           }}
         >
-          {/* النصوص والزر */}
+          {/* النصوص */}
           <Box sx={{ flex: 1 }}>
             <Typography
               variant="body2"
@@ -79,38 +86,40 @@ function HeroSection() {
             >
               30% OFF
             </Typography>
+
             <Typography
-              variant="h5"
+              variant={isMobile ? 'h5' : 'h4'}
               fontWeight="bold"
               gutterBottom
-              sx={{
-                color: isDarkMode ? '#fff' : '#002B5B',
-                fontSize: { xs: '1.5rem', sm: '2rem', md: '2.25rem' },
-              }}
+              sx={{ color: isDarkMode ? '#fff' : '#002B5B' }}
             >
               Feel Every Beat. <br /> Hear the Difference.
             </Typography>
+
             <Typography
               variant="body1"
               sx={{
                 color: isDarkMode ? '#cceeff' : '#003C57',
                 mb: 3,
-                fontSize: { xs: '0.95rem', sm: '1rem' },
               }}
             >
               Experience immersive sound with our premium speaker collection
             </Typography>
+
             <Button
               variant="contained"
+              aria-label="Buy speakers now"
               sx={{
                 backgroundColor: '#fff',
                 color: '#002B5B',
                 borderRadius: '12px',
                 fontWeight: 'bold',
                 textTransform: 'none',
-                boxShadow: 1,
+                boxShadow: 2,
+                transition: 'background-color 0.3s ease, transform 0.3s ease',
                 '&:hover': {
                   backgroundColor: '#f0f0f0',
+                  transform: 'scale(1.05)',
                 },
               }}
             >
@@ -123,16 +132,21 @@ function HeroSection() {
             component="img"
             src={music}
             alt="Speakers"
+            loading="lazy"
             sx={{
               width: { xs: '90%', sm: '80%', md: 280 },
               maxWidth: 340,
               height: 'auto',
               borderRadius: 3,
+              transition: 'transform 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.03)',
+              },
             }}
           />
         </Box>
 
-        {/* يمين: صورة pic11 */}
+        {/* يمين */}
         <Box
           sx={{
             flex: 1.2,
@@ -147,11 +161,16 @@ function HeroSection() {
             component="img"
             src={pic11}
             alt="Right image"
+            loading="lazy"
             sx={{
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              borderRadius: { xs: 0, md: '16px' },
+              borderRadius: '16px',
+              transition: 'transform 0.3s ease',
+              '&:hover': {
+                transform: 'scale(1.03)',
+              },
             }}
           />
         </Box>
@@ -161,8 +180,3 @@ function HeroSection() {
 }
 
 export default HeroSection;
-
-
-
-
-
